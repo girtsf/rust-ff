@@ -1,0 +1,10 @@
+[package]
+name = "ff"
+version = "0.1.0"
+authors = ["girts <opensource@girts.me>"]
+
+[dependencies]
+clap = "~2.31.2"
+colored = "~1.6.0"
+walkdir = "~2.1.4"
+regex = "~1.0.0"
