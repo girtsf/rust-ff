@@ -1,5 +1,6 @@
 extern crate clap;
 extern crate colored;
+extern crate isatty;
 extern crate regex;
 extern crate walkdir;
 
@@ -8,6 +9,7 @@ use colored::Colorize;
 use regex::{Captures, RegexBuilder};
 
 fn ff(case_sensitive: bool, pattern: Option<&str>) {
+    let output_is_tty = isatty::stdout_isatty();
     let re = if let Some(re) = pattern {
         Some(
             RegexBuilder::new(re)
@@ -26,7 +28,12 @@ fn ff(case_sensitive: bool, pattern: Option<&str>) {
             if !re.is_match(&name) {
                 continue;
             }
-            re.replace_all(&name, |x: &Captures| format!("{}", x[0].red()))
+            // Only colorize if output is a tty.
+            if output_is_tty {
+                re.replace_all(&name, |x: &Captures| format!("{}", x[0].red()))
+            } else {
+                name
+            }
         } else {
             name
         };
